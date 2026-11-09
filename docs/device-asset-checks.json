@@ -1,0 +1,137 @@
+[
+  {
+    "path": "assets/aktal-white.svg",
+    "status": 200,
+    "bytes": 24202
+  },
+  {
+    "path": "assets/arch-villas.webp",
+    "status": 200,
+    "bytes": 317034
+  },
+  {
+    "path": "assets/arch.webp",
+    "status": 200,
+    "bytes": 220640
+  },
+  {
+    "path": "assets/corner.webp",
+    "status": 200,
+    "bytes": 176342
+  },
+  {
+    "path": "assets/favicon.svg",
+    "status": 200,
+    "bytes": 257
+  },
+  {
+    "path": "assets/flags/cn.svg",
+    "status": 200,
+    "bytes": 536
+  },
+  {
+    "path": "assets/flags/gb.svg",
+    "status": 200,
+    "bytes": 553
+  },
+  {
+    "path": "assets/flags/ru.svg",
+    "status": 200,
+    "bytes": 200
+  },
+  {
+    "path": "assets/flags/sa.svg",
+    "status": 200,
+    "bytes": 24613
+  },
+  {
+    "path": "assets/flags/tr.svg",
+    "status": 200,
+    "bytes": 287
+  },
+  {
+    "path": "assets/fonts.css",
+    "status": 200,
+    "bytes": 696
+  },
+  {
+    "path": "assets/ibm-plex-arabic-0.ttf",
+    "status": 200,
+    "bytes": 219592
+  },
+  {
+    "path": "assets/ibm-plex-arabic-1.ttf",
+    "status": 200,
+    "bytes": 224816
+  },
+  {
+    "path": "assets/ibm-plex-arabic-2.ttf",
+    "status": 200,
+    "bytes": 227276
+  },
+  {
+    "path": "assets/ibm-plex-arabic-3.ttf",
+    "status": 200,
+    "bytes": 229352
+  },
+  {
+    "path": "assets/kalta-floors.webp",
+    "status": 200,
+    "bytes": 50396
+  },
+  {
+    "path": "assets/kalta-villas.webp",
+    "status": 200,
+    "bytes": 116190
+  },
+  {
+    "path": "assets/light-villa.webp",
+    "status": 200,
+    "bytes": 148866
+  },
+  {
+    "path": "assets/loft-villas.webp",
+    "status": 200,
+    "bytes": 205020
+  },
+  {
+    "path": "assets/oash.webp",
+    "status": 200,
+    "bytes": 103310
+  },
+  {
+    "path": "assets/raf.webp",
+    "status": 200,
+    "bytes": 148164
+  },
+  {
+    "path": "assets/rafiah.webp",
+    "status": 200,
+    "bytes": 141728
+  },
+  {
+    "path": "assets/shadow.webp",
+    "status": 200,
+    "bytes": 120502
+  },
+  {
+    "path": "assets/vera.webp",
+    "status": 200,
+    "bytes": 258974
+  },
+  {
+    "path": "assets/view-arch.webp",
+    "status": 200,
+    "bytes": 151200
+  },
+  {
+    "path": "assets/view-loft.webp",
+    "status": 200,
+    "bytes": 443200
+  },
+  {
+    "path": "projects.json",
+    "status": 200,
+    "bytes": 7936
+  }
+]

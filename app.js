@@ -55,6 +55,9 @@ function translate() {
   ['city','district','status','sort'].forEach((key,i) => $('#'+['cityFilter','districtFilter','statusFilter','sortFilter'][i]).setAttribute('aria-label', t(['city','district','delivery','sort'][i])));
   $$('[data-language]').forEach(button => button.setAttribute('aria-checked', String(button.dataset.language === lang)));
   $('#languageButton').setAttribute('aria-label', ({ar:'اختيار اللغة',en:'Select language',ru:'Выбрать язык',zh:'选择语言',tr:'Dil seçin'})[lang]);
+  $('.main-nav').setAttribute('aria-label', ({ar:'التنقل الرئيسي',en:'Main navigation',ru:'Основная навигация',zh:'主导航',tr:'Ana gezinme'})[lang]);
+  $('nav', $('#sideMenu')).setAttribute('aria-label', ({ar:'كل الصفحات',en:'All pages',ru:'Все страницы',zh:'全部页面',tr:'Tüm sayfalar'})[lang]);
+  $('.brand').setAttribute('aria-label', lang === 'ar' ? 'أكتال — الرئيسية' : 'AKTAL — '+t('home'));
   $('#menuButton').setAttribute('aria-label',t('menuOpen'));
   $('#closeMenu').setAttribute('aria-label',t('menuClose'));
   $('#closeDetail').setAttribute('aria-label',t('closeDetail'));

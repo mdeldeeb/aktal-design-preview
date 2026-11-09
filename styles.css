@@ -37,3 +37,15 @@
 .tap-sheen{position:fixed;z-index:1000;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.01),rgba(123,113,194,.13) 35%,rgba(255,255,255,.17) 52%,rgba(255,255,255,.01));opacity:0;animation:glass-tap 380ms var(--ease) both;contain:strict}
 @keyframes glass-tap{0%{opacity:0}22%{opacity:1}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.tap-sheen{display:none}.tap-pressed,:where(a[href],button,summary,[role=button]):active{scale:1;filter:brightness(1.06)}.circle-link:hover{transform:none}}
+
+/* Device QA: comfortable tap areas, readable action text and short landscape screens. */
+.share-button{width:44px;height:44px}
+.detail-link,.clear-filters,.back-top{min-height:44px}
+.detail-link{color:var(--ink)}
+.detail-link:hover{text-decoration:underline;text-decoration-color:var(--lotus);text-underline-offset:5px}
+.footer-links a,.footer-bottom>a{min-height:44px;display:inline-flex;align-items:center}
+.broker-steps>div>span{color:var(--muted)}
+.hero-content{text-shadow:0 2px 18px rgba(13,10,36,.35)}
+@media(max-width:760px){.header-tools{gap:8px}.theme-button,.menu-button,.language-picker,.language-picker .language-button{width:44px;height:44px}.price-box strong{font-size:19px}}
+@media(max-width:540px){.price-box strong{font-size:21px}}
+@media(max-height:600px) and (min-width:600px){.hero{height:100svh;min-height:100svh;max-height:none}.hero-content{bottom:45px}.hero h1{font-size:42px}.hero p{font-size:16px}.header-inner{min-height:80px}}
