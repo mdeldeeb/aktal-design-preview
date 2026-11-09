@@ -10,6 +10,7 @@ const dictionary = {
     skip:'Skip to content', home:'Home', projects:'Projects', brokers:'Broker Platform', discover:'Explore projects', ourPerspective:'THE AKTAL PERSPECTIVE', introTitle:'A clear vision.<br>A considered choice.', introCopy:'Discover carefully selected properties, clear information and a thoughtful experience that guides you from your first choice to your next step.', allProjects:'Explore all projects', selectedDestinations:'SELECTED DESTINATIONS', browse:'Explore', ourProjects:'our projects', projectCaption:'Distinctive spaces.<br>A place for your ambitions.', searchPlaceholder:'Search by project or district', showProjects:'View projects', city:'City', district:'District', delivery:'Project status', sort:'Sort by', allCities:'All cities', riyadh:'Riyadh', jeddah:'Jeddah', allDistricts:'All districts', allStatuses:'All statuses', offPlan:'Off-plan', ready:'Ready to move in', defaultSort:'Featured order', priceAsc:'Price: low to high', priceDesc:'Price: high to low', clearFilters:'Clear filters', noProjects:'No projects match your selection', noProjectsCopy:'Try another city or district, or clear the filters to explore all projects.', resetAll:'View all projects', snapshot:'Design preview · Project information is a snapshot of the AKTAL website, not a live availability feed.', partnership:'PARTNERSHIPS THAT OPEN DOORS', brokerHeading:'More opportunities.<br>Closer partnerships.', brokerCopy:'Discover AKTAL’s real estate broker platform and explore marketing opportunities through the official platform.', joinBrokers:'Visit the broker platform', brokerStep1:'Explore the projects', brokerStep1Copy:'Browse locations, photography and essential project information.', brokerStep2:'Apply to join', brokerStep2Copy:'Complete your application on AKTAL’s official broker platform.', brokerStep3:'Begin your partnership', brokerStep3Copy:'The AKTAL team will help you complete the onboarding process.', nextStep:'YOUR NEXT STEP', contactHeading:'Let’s find your place.', contact:'Get in touch', footerStatement:'Saudi real estate.<br>Thoughtfully connected.', developers:'Developers', ownership:'Non-Saudi Ownership', offers:'Promotional Offers', lands:'Land', areas:'Districts', about:'About AKTAL', careers:'Careers', address:'Al Arid, Riyadh', copyright:'© 2026 AKTAL Real Estate. All rights reserved.', previewLabel:'Independent design preview', privacy:'Privacy policy', explore:'EXPLORE AKTAL', available:'Available', soldOut:'Sold out', residential:'Residential', soldPercent:'Sales progress', license:'License', from:'Starting from', sar:'SAR', details:'View details', projectWord:'projects', results:'of', share:'Share project', copied:'Project link copied', copyFailed:'Could not copy the link. Open the project details to share it.', officialProject:'Official project page', detailNote:'Visit the official project page to confirm current pricing and availability.', heroProjects:'Our projects', heroProjectsSub:'Considered destinations. Details worth discovering.', heroHome:'Saudi real estate.<br>Thoughtfully connected.', heroHomeSub:'Selected projects. One step closer to a place that fits you.', heroBrokers:'Broker Platform', heroBrokersSub:'Closer partnerships. New possibilities.', heroCredit:'Arch View Villas · Riyadh', themeLight:'Light appearance — switch to dark', themeDark:'Dark appearance — switch to light', themeSystem:'Following your system appearance', menuOpen:'Open menu', menuClose:'Close menu', closeDetail:'Close project details', resultsError:'Projects could not be loaded. Please refresh the page.', backTop:'Back to top', loaded:'Projects updated',
   }
 };
+Object.assign(dictionary, window.AKTAL_LOCALES);
 let lang = 'ar';
 let projects = [];
 let currentPage = 'projects';
@@ -52,7 +53,8 @@ function translate() {
   $$('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
   $$('[data-i18n-placeholder]').forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); el.setAttribute('aria-label', el.placeholder); });
   ['city','district','status','sort'].forEach((key,i) => $('#'+['cityFilter','districtFilter','statusFilter','sortFilter'][i]).setAttribute('aria-label', t(['city','district','delivery','sort'][i])));
-  $('#languageButton').setAttribute('aria-label', lang === 'ar' ? 'Switch to English' : 'التبديل إلى العربية');
+  $('#languageButton').value = lang;
+  $('#languageButton').setAttribute('aria-label', ({ar:'اختيار اللغة',en:'Select language',ru:'Выбрать язык',zh:'选择语言',tr:'Dil seçin'})[lang]);
   $('#menuButton').setAttribute('aria-label',t('menuOpen'));
   $('#closeMenu').setAttribute('aria-label',t('menuClose'));
   $('#closeDetail').setAttribute('aria-label',t('closeDetail'));
@@ -64,7 +66,7 @@ function translate() {
   renderProjects();
   if (activeProject) renderDetail(activeProject);
 }
-$('#languageButton').addEventListener('click', () => { lang = lang === 'ar' ? 'en' : 'ar'; writeStorage('aktal-preview-language',lang); translate(); });
+$('#languageButton').addEventListener('change', e => { lang = e.target.value; writeStorage('aktal-preview-language',lang); translate(); });
 
 function updateHero() {
   const kind = currentPage === 'home' ? 'Home' : currentPage === 'brokers' ? 'Brokers' : 'Projects';
@@ -163,6 +165,7 @@ $('#projectGrid').addEventListener('click',async e => {
 });
 
 function route(initial=false) {
+  if (location.hash === '#main') return;
   const [path,query='']=location.hash.replace(/^#\/?/,'').split('?');
   const page=['home','projects','brokers'].includes(path)?path:'projects';
   const changed=page!==currentPage;

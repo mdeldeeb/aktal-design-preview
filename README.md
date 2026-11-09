@@ -10,7 +10,7 @@ A standalone, responsive presentation prototype inspired by the layout at [Jewar
 - No changes to Lovable, the production website, CRM, permissions or customer records.
 - Public project snapshot captured from aktal.com.sa on 9 November 2026. Pricing and availability are not live; visitors can open the official project page for current information.
 - Home, Projects and Broker Platform routes; remaining official pages are in the side menu and open in a new tab.
-- Arabic and English; project/city/district names use Arabic in Arabic and English in English.
+- Arabic, English, Russian, Chinese and Turkish; project/city/district names use Arabic in Arabic and English in English.
 - Same current website typeface: IBM Plex Sans Arabic. Brand palette: #0D0A24, #1F1A4D, #7B71C2, #E4DFDB and white.
 - Project search, city/district/delivery filters, price sorting, project detail modal, share links, appearance switch and system appearance default.
 

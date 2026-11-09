@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="assets/fonts.css">
   <link rel="stylesheet" href="styles.css">
   <script>try{const p=localStorage.getItem('aktal-preview-theme')||'system';document.documentElement.dataset.theme=p==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):p}catch{document.documentElement.dataset.theme='light'}</script>
+  <script src="locales.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -25,7 +26,7 @@
         <a href="#/brokers" data-page="brokers" data-i18n="brokers">منصة الوسطاء</a>
       </nav>
       <div class="header-tools">
-        <button class="language-button" id="languageButton" aria-label="Switch to English"><span class="lang-en">EN</span><span aria-hidden="true">/</span><span class="lang-ar" aria-hidden="true">ع</span></button>
+        <label class="language-picker"><select class="language-button" id="languageButton" aria-label="اختيار اللغة"><option value="ar" lang="ar">العربية</option><option value="en" lang="en">English</option><option value="ru" lang="ru">Русский</option><option value="zh" lang="zh">中文</option><option value="tr" lang="tr">Türkçe</option></select><span aria-hidden="true">⌄</span></label>
         <button class="icon-button theme-button" id="themeButton" aria-label="تغيير المظهر" title="تغيير المظهر"></button>
         <button class="menu-button" id="menuButton" aria-label="فتح القائمة" aria-expanded="false" aria-controls="sideMenu"><span></span><span></span><span></span></button>
       </div>
