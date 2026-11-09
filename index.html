@@ -26,7 +26,16 @@
         <a href="#/brokers" data-page="brokers" data-i18n="brokers">منصة الوسطاء</a>
       </nav>
       <div class="header-tools">
-        <label class="language-picker"><select class="language-button" id="languageButton" aria-label="اختيار اللغة"><option value="ar" lang="ar">العربية</option><option value="en" lang="en">English</option><option value="ru" lang="ru">Русский</option><option value="zh" lang="zh">中文</option><option value="tr" lang="tr">Türkçe</option></select><span aria-hidden="true">⌄</span></label>
+        <div class="language-picker">
+          <button class="icon-button language-button" id="languageButton" aria-label="اختيار اللغة" aria-haspopup="menu" aria-expanded="false" aria-controls="languageMenu"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 4 6 4 9s-1 6-4 9c-3-3-4-6-4-9s1-6 4-9Z"/></svg></button>
+          <div class="language-dropdown" id="languageMenu" role="menu" aria-label="Languages" hidden>
+            <button role="menuitemradio" aria-checked="true" data-language="ar"><img src="assets/flags/sa.svg" width="28" height="19" alt="" aria-hidden="true"><span lang="ar">العربية</span><span class="language-check" aria-hidden="true">✓</span></button>
+            <button role="menuitemradio" aria-checked="false" data-language="en"><img src="assets/flags/gb.svg" width="28" height="19" alt="" aria-hidden="true"><span lang="en">English</span><span class="language-check" aria-hidden="true">✓</span></button>
+            <button role="menuitemradio" aria-checked="false" data-language="ru"><img src="assets/flags/ru.svg" width="28" height="19" alt="" aria-hidden="true"><span lang="ru">Русский</span><span class="language-check" aria-hidden="true">✓</span></button>
+            <button role="menuitemradio" aria-checked="false" data-language="zh"><img src="assets/flags/cn.svg" width="28" height="19" alt="" aria-hidden="true"><span lang="zh">中文</span><span class="language-check" aria-hidden="true">✓</span></button>
+            <button role="menuitemradio" aria-checked="false" data-language="tr"><img src="assets/flags/tr.svg" width="28" height="19" alt="" aria-hidden="true"><span lang="tr">Türkçe</span><span class="language-check" aria-hidden="true">✓</span></button>
+          </div>
+        </div>
         <button class="icon-button theme-button" id="themeButton" aria-label="تغيير المظهر" title="تغيير المظهر"></button>
         <button class="menu-button" id="menuButton" aria-label="فتح القائمة" aria-expanded="false" aria-controls="sideMenu"><span></span><span></span><span></span></button>
       </div>

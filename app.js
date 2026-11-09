@@ -53,7 +53,7 @@ function translate() {
   $$('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
   $$('[data-i18n-placeholder]').forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); el.setAttribute('aria-label', el.placeholder); });
   ['city','district','status','sort'].forEach((key,i) => $('#'+['cityFilter','districtFilter','statusFilter','sortFilter'][i]).setAttribute('aria-label', t(['city','district','delivery','sort'][i])));
-  $('#languageButton').value = lang;
+  $$('[data-language]').forEach(button => button.setAttribute('aria-checked', String(button.dataset.language === lang)));
   $('#languageButton').setAttribute('aria-label', ({ar:'اختيار اللغة',en:'Select language',ru:'Выбрать язык',zh:'选择语言',tr:'Dil seçin'})[lang]);
   $('#menuButton').setAttribute('aria-label',t('menuOpen'));
   $('#closeMenu').setAttribute('aria-label',t('menuClose'));
@@ -66,7 +66,21 @@ function translate() {
   renderProjects();
   if (activeProject) renderDetail(activeProject);
 }
-$('#languageButton').addEventListener('change', e => { lang = e.target.value; writeStorage('aktal-preview-language',lang); translate(); });
+const languageMenu = $('#languageMenu');
+function closeLanguages(restoreFocus = false) { languageMenu.hidden = true; $('#languageButton').setAttribute('aria-expanded','false'); if(restoreFocus) $('#languageButton').focus(); }
+function openLanguages(focusOption = false) { languageMenu.hidden = false; $('#languageButton').setAttribute('aria-expanded','true'); if(focusOption) ($('[aria-checked=true]',languageMenu) || $('button',languageMenu)).focus(); }
+$('#languageButton').addEventListener('click', () => { if(languageMenu.hidden) openLanguages(); else closeLanguages(); });
+$('#languageButton').addEventListener('keydown', e => { if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){e.preventDefault();openLanguages(true);} });
+languageMenu.addEventListener('click', e => { const button=e.target.closest('[data-language]'); if(!button)return; lang=button.dataset.language; writeStorage('aktal-preview-language',lang); translate(); closeLanguages(true); });
+languageMenu.addEventListener('keydown', e => {
+  const options=$$('button',languageMenu), index=options.indexOf(document.activeElement);
+  if(e.key === 'Escape'){e.preventDefault();closeLanguages(true);return;}
+  let next; if(e.key==='ArrowDown')next=(index+1)%options.length; if(e.key==='ArrowUp')next=(index-1+options.length)%options.length; if(e.key==='Home')next=0;if(e.key==='End')next=options.length-1;
+  if(next!==undefined){e.preventDefault();options[next].focus();}
+});
+document.addEventListener('click', e => {if(!e.target.closest('.language-picker'))closeLanguages();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!languageMenu.hidden)closeLanguages(true);});
+document.addEventListener('focusin',e=>{if(!e.target.closest('.language-picker'))closeLanguages();});
 
 function updateHero() {
   const kind = currentPage === 'home' ? 'Home' : currentPage === 'brokers' ? 'Brokers' : 'Projects';
