@@ -59,7 +59,6 @@ function translate() {
   $('#closeMenu').setAttribute('aria-label',t('menuClose'));
   $('#closeDetail').setAttribute('aria-label',t('closeDetail'));
   $('#backTop').setAttribute('aria-label',t('backTop'));
-  $('#scrollButton').setAttribute('aria-label',t('discover'));
   setTheme(readStorage('aktal-preview-theme','system'), false);
   updateDistricts();
   updateHero();
@@ -86,8 +85,6 @@ function updateHero() {
   const kind = currentPage === 'home' ? 'Home' : currentPage === 'brokers' ? 'Brokers' : 'Projects';
   $('#heroTitle').innerHTML = t('hero'+kind);
   $('#heroSubtitle').textContent = t('hero'+kind+'Sub');
-  $('#heroCredit').textContent = t('heroCredit');
-  $('#heroSideNote').textContent = lang === 'ar' ? 'الرياض · جدة' : 'Riyadh · Jeddah';
   document.title = (currentPage === 'home' ? (lang === 'ar' ? 'أكتال العقارية' : 'AKTAL Real Estate') : t(currentPage)) + ' | AKTAL';
   const desired = currentPage === 'brokers' ? 'assets/view-arch.webp' : 'assets/arch-villas.webp';
   if (!$('#heroImage').src.endsWith(desired)) $('#heroImage').src = desired;
@@ -194,7 +191,6 @@ function route(initial=false) {
   if(p)openDetail(p);else if(detail.open)detail.close();
 }
 window.addEventListener('hashchange',()=>route());
-$('#scrollButton').addEventListener('click',()=>$(currentPage==='brokers'?'#brokersSection':'#projectSection').scrollIntoView({behavior:motionQuery.matches?'instant':'smooth'}));
 $('#backTop').addEventListener('click',()=>scrollTo({top:0,behavior:motionQuery.matches?'instant':'smooth'}));
 let scrollPending=false;
 addEventListener('scroll',()=>{if(!scrollPending){scrollPending=true;requestAnimationFrame(()=>{$('#header').classList.toggle('scrolled',scrollY>40);scrollPending=false;});}},{passive:true});
