@@ -60,3 +60,18 @@
 .contact-chat>span{white-space:nowrap}
 [dir=ltr] .contact-chat{border-radius:24px 24px 24px 8px}
 @media(max-width:640px){.contact-inner{flex-direction:column;align-items:flex-start;gap:26px}.contact-band h2{max-width:none}.contact-chat{min-width:180px;min-height:72px;padding:17px 23px;font-size:15px}}
+
+/* WhatsApp and phone: the same purple glass, icon-only, with calm motion. */
+.contact-channels{display:flex;gap:16px;align-items:center;flex-shrink:0}
+.contact-channel{position:relative;isolation:isolate;width:68px;height:68px;display:grid;place-items:center;flex-shrink:0;border-radius:50%;border:1.5px solid rgba(255,255,255,.65);background:linear-gradient(140deg,rgba(123,113,194,.88),rgba(31,26,77,.78));box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 -6px 18px rgba(31,26,77,.18),0 8px 24px rgba(13,10,36,.2);-webkit-backdrop-filter:blur(14px) saturate(130%);backdrop-filter:blur(14px) saturate(130%);overflow:hidden;transition:scale .15s var(--ease),box-shadow .25s,border-color .25s,background .25s}
+.contact-channel::before{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.22),transparent 48%,rgba(255,255,255,.04));border-radius:inherit}
+.contact-channel img{width:31px;height:31px;object-fit:contain;position:relative;z-index:1;animation:contact-icon-float 4s ease-in-out infinite;filter:drop-shadow(0 1px 3px rgba(13,10,36,.2));pointer-events:none}
+.contact-channel.call-channel img{width:29px;height:29px;animation-delay:-2s}
+.contact-channel:hover{border-color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 10px 28px rgba(123,113,194,.3);background:linear-gradient(140deg,rgba(123,113,194,.98),rgba(31,26,77,.85))}
+.floating-contact{position:fixed;left:max(20px,env(safe-area-inset-left));bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;flex-direction:column;gap:13px;transition:opacity .2s,visibility .2s}
+.floating-contact .contact-channel{width:60px;height:60px}
+.modal-open .floating-contact{opacity:0;visibility:hidden;pointer-events:none}
+.contact-channels:not(.is-visible) .contact-channel img{animation-play-state:paused}
+@keyframes contact-icon-float{0%,100%{transform:translateY(1px)}50%{transform:translateY(-3px)}}
+@media(max-width:640px){.contact-channels{gap:14px}.contact-channels .contact-channel{width:64px;height:64px}.floating-contact{left:max(12px,env(safe-area-inset-left));bottom:calc(16px + env(safe-area-inset-bottom,0px));gap:11px}.floating-contact .contact-channel{width:56px;height:56px}.floating-contact .contact-channel img{width:27px;height:27px}}
+@media(prefers-reduced-motion:reduce){.contact-channel img{animation:none!important}}

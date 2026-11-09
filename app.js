@@ -62,6 +62,15 @@ function translate() {
   $('#closeMenu').setAttribute('aria-label',t('menuClose'));
   $('#closeDetail').setAttribute('aria-label',t('closeDetail'));
   $('#backTop').setAttribute('aria-label',t('backTop'));
+  const contactLabels = {
+    ar:{whatsapp:'واتساب أكتال',call:'اتصال بأكتال',group:'قنوات التواصل'},
+    en:{whatsapp:'WhatsApp AKTAL',call:'Call AKTAL',group:'Contact options'},
+    ru:{whatsapp:'Написать AKTAL в WhatsApp',call:'Позвонить в AKTAL',group:'Способы связи'},
+    zh:{whatsapp:'通过 WhatsApp 联系 AKTAL',call:'致电 AKTAL',group:'联系方式'},
+    tr:{whatsapp:'AKTAL’a WhatsApp’tan yazın',call:'AKTAL’ı arayın',group:'İletişim seçenekleri'}
+  }[lang];
+  $$('[data-contact-channel]').forEach(link => {link.setAttribute('aria-label',contactLabels[link.dataset.contactChannel]);link.title=contactLabels[link.dataset.contactChannel];});
+  $$('.contact-channels,.floating-contact').forEach(group=>group.setAttribute('aria-label',contactLabels.group));
   setTheme(readStorage('aktal-preview-theme','system'), false);
   updateDistricts();
   updateHero();
@@ -236,5 +245,18 @@ document.addEventListener('pointerdown', event => {
 document.addEventListener('click', event => {
   if (event.detail === 0) showPressFeedback(event.target.closest?.(actionable), true);
 }, {passive:true});
+
+
+// Keep one visible pair: fixed contact shortcuts, then the inline pair when it is in view.
+const inlineContacts = $('.contact-channels');
+const floatingContacts = $('#floatingContact');
+if ('IntersectionObserver' in window) {
+  const contactVisibility = new IntersectionObserver(entries => {
+    const visible = entries[0].isIntersecting && entries[0].intersectionRatio >= 0.5;
+    floatingContacts.hidden = visible;
+    inlineContacts.classList.toggle('is-visible', visible);
+  }, {threshold:0.5});
+  contactVisibility.observe(inlineContacts);
+}
 
 init();
