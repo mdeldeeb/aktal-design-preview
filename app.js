@@ -120,7 +120,7 @@ function card(p) {
       <h3><a href="#/${currentPage}?project=${p.id}">${title}</a></h3><p class="card-type">${t('residential')}</p><div class="card-delivery">${calendar}<span>${t(p.status === 'plan' ? 'offPlan':'ready')}</span></div>
       <div class="sales-row"><span>${p.sold === 100 ? t('soldOut') : t('soldPercent')}</span><b>${p.sold}%</b></div><div class="sale-progress" role="img" aria-label="${t('soldPercent')} ${p.sold}%"><span style="width:${p.sold}%"></span></div>
       <div class="license-line">${doc}<span>${t('license')}: <bdi>${p.license}</bdi></span></div>
-      <div class="card-bottom"><div class="price-box"><span>${t('from')}</span><strong><bdi>${number(p.price)}</bdi> <small>${t('sar')}</small></strong></div><a class="detail-link" href="#/${currentPage}?project=${p.id}"><span>${t('details')}</span><span aria-hidden="true">${lang === 'ar' ? '←' : '→'}</span></a></div>
+      <div class="card-bottom"><div class="price-box"><span>${t('from')}</span><strong><bdi>${number(p.price)}</bdi> <small>${t('sar')}</small></strong></div><a class="detail-link" href="#/${currentPage}?project=${p.id}"><span>${t('details')}</span></a></div>
     </div></article>`;
 }
 function renderProjects() {
@@ -159,7 +159,7 @@ menu.addEventListener('click',e => { if (e.target === menu && (e.clientX < menu.
 $$('a',menu).forEach(a => a.addEventListener('click',closeMenu));
 
 function renderDetail(p) {
-  $('#projectDetail').innerHTML = `<img class="detail-photo" src="${p.image}" width="1000" height="550" alt="${escapeHtml(name(p))}"><div class="detail-body"><div class="card-location">${pin}<span>${escapeHtml(districtName(p))}، ${escapeHtml(cityName(p))}</span></div><h2 id="detailTitle">${escapeHtml(name(p))}</h2><div class="price-box"><span>${t('from')}</span><strong><bdi>${number(p.price)}</bdi> <small>${t('sar')}</small></strong></div><div class="detail-facts"><div><span>${t('delivery')}</span><strong>${t(p.status==='plan'?'offPlan':'ready')}</strong></div><div><span>${t('soldPercent')}</span><strong dir="ltr">${p.sold}%</strong></div><div><span>${t('license')}</span><strong><bdi>${p.license}</bdi></strong></div></div><div class="detail-actions"><p>${t('detailNote')}</p><a class="primary-button" href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer"><span>${t('officialProject')}</span><span aria-hidden="true">↗</span></a></div></div>`;
+  $('#projectDetail').innerHTML = `<img class="detail-photo" src="${p.image}" width="1000" height="550" alt="${escapeHtml(name(p))}"><div class="detail-body"><div class="card-location">${pin}<span>${escapeHtml(districtName(p))}، ${escapeHtml(cityName(p))}</span></div><h2 id="detailTitle">${escapeHtml(name(p))}</h2><div class="price-box"><span>${t('from')}</span><strong><bdi>${number(p.price)}</bdi> <small>${t('sar')}</small></strong></div><div class="detail-facts"><div><span>${t('delivery')}</span><strong>${t(p.status==='plan'?'offPlan':'ready')}</strong></div><div><span>${t('soldPercent')}</span><strong dir="ltr">${p.sold}%</strong></div><div><span>${t('license')}</span><strong><bdi>${p.license}</bdi></strong></div></div><div class="detail-actions"><p>${t('detailNote')}</p><a class="primary-button" href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer"><span>${t('officialProject')}</span></a></div></div>`;
 }
 function openDetail(p) { activeProject = p; renderDetail(p); if(!detail.open) {detail.showModal(); document.body.classList.add('modal-open');} }
 function removeProjectFromRoute() { if(new URLSearchParams(location.hash.split('?')[1]).has('project')) history.replaceState(null,'',`#/${currentPage}`); }
@@ -205,4 +205,33 @@ async function init() {
   } catch(error){$('#resultsCount').textContent=t('resultsError');$('#emptyState').hidden=true;console.error('Project snapshot could not be loaded',error);}
   $('#header').classList.toggle('scrolled',scrollY>40);
 }
+
+// Immediate feedback for every actionable element; never delays or intercepts navigation.
+const pressTimers = new WeakMap();
+function showPressFeedback(element, keyboard = false) {
+  if (!element || element.matches(':disabled,[aria-disabled="true"]')) return;
+  clearTimeout(pressTimers.get(element));
+  element.classList.add('tap-pressed');
+  pressTimers.set(element, setTimeout(() => element.classList.remove('tap-pressed'), 180));
+  if (motionQuery.matches) return;
+  const bounds = element.getBoundingClientRect();
+  if (!bounds.width || !bounds.height) return;
+  const sheen = document.createElement('span');
+  sheen.className = 'tap-sheen';
+  sheen.setAttribute('aria-hidden','true');
+  const left = Math.max(0,bounds.left), top = Math.max(0,bounds.top);
+  sheen.style.cssText = `left:${left}px;top:${top}px;width:${Math.min(bounds.right,innerWidth)-left}px;height:${Math.min(bounds.bottom,innerHeight)-top}px;border-radius:${getComputedStyle(element).borderRadius};`;
+  document.body.appendChild(sheen);
+  sheen.addEventListener('animationend', () => sheen.remove(), {once:true});
+  setTimeout(() => sheen.remove(), 500);
+}
+const actionable = 'a[href],button,select,input:not([type="hidden"]),summary,[role="button"]';
+document.addEventListener('pointerdown', event => {
+  if (event.button !== 0) return;
+  showPressFeedback(event.target.closest?.(actionable));
+}, {passive:true});
+document.addEventListener('click', event => {
+  if (event.detail === 0) showPressFeedback(event.target.closest?.(actionable), true);
+}, {passive:true});
+
 init();
