@@ -11,12 +11,15 @@ const dictionary = {
   }
 };
 Object.assign(dictionary, window.AKTAL_LOCALES);
+const privacyCopy = {"ar": {"brokersShort": "الوسطاء", "ownershipShort": "تملك الأجانب", "privacySettings": "إعدادات الخصوصية", "consentTitle": "خصوصيتك تهمنا", "consentCopy": "نستخدم ملفات التعريف والتخزين لحفظ اختياراتك وتفضيلات اللغة والمظهر. اختر ما يناسبك قبل متابعة التصفح.", "consentDetails": "كيف تُستخدم بياناتك في هذه المعاينة؟", "consentPolicy": "نحفظ اختيار الخصوصية على جهازك. عند قبول التفضيلات، نتذكر اللغة والمظهر والفلاتر؛ وعند اختيار الضروري فقط تبقى اختيارات التصفح مؤقتة ولا نحفظها للزيارة التالية. لا تستخدم هذه المعاينة أدوات تحليلات أو إعلانات، ولا ترسل بياناتك إلى نظام أكتال. روابط الموقع الرسمي وواتساب تخضع لسياسات تلك الخدمات.", "consentAccept": "موافق، حفظ التفضيلات", "consentNecessary": "الضروري فقط"}, "en": {"brokersShort": "Brokers", "ownershipShort": "Foreign ownership", "privacySettings": "Privacy settings", "consentTitle": "Your privacy matters", "consentCopy": "We use cookies and storage to remember your choices, language and appearance. Choose your preferences before continuing.", "consentDetails": "How does this preview use your data?", "consentPolicy": "Your privacy choice is stored on this device. If you accept preferences, we remember your language, appearance and filters. With essential only, browsing preferences remain temporary and are not saved for your next visit. This preview uses no analytics or advertising tools and sends no data to the AKTAL system. Official-site and WhatsApp links follow those services’ privacy policies.", "consentAccept": "Accept preferences", "consentNecessary": "Essential only"}, "ru": {"brokersShort": "Брокеры", "ownershipShort": "Иностранцам", "privacySettings": "Настройки приватности", "consentTitle": "Ваша конфиденциальность важна", "consentCopy": "Мы используем файлы cookie и хранилище, чтобы запоминать ваш выбор, язык и оформление. Выберите настройки перед продолжением.", "consentDetails": "Как используются данные в этом макете?", "consentPolicy": "Ваш выбор сохраняется на этом устройстве. При согласии мы запоминаем язык, оформление и фильтры. При выборе только необходимых функций настройки действуют временно и не сохраняются для следующего посещения. В макете нет аналитики и рекламы; данные не передаются в систему AKTAL. На официальном сайте и в WhatsApp действуют их собственные правила конфиденциальности.", "consentAccept": "Сохранить предпочтения", "consentNecessary": "Только необходимое"}, "zh": {"brokersShort": "经纪人", "ownershipShort": "外籍置业", "privacySettings": "隐私设置", "consentTitle": "我们重视您的隐私", "consentCopy": "我们使用 Cookie 和存储功能来记住您的选择、语言和显示偏好。请在继续浏览前选择您的设置。", "consentDetails": "此预览如何使用您的数据？", "consentPolicy": "您的隐私选择将保存在此设备上。接受偏好设置后，我们会记住语言、显示模式和筛选条件。选择仅必要功能时，浏览偏好仅临时生效，不会保留至下次访问。此预览不使用分析或广告工具，也不会向 AKTAL 系统发送数据。官方网站及 WhatsApp 链接适用各自的隐私政策。", "consentAccept": "接受并保存偏好", "consentNecessary": "仅必要功能"}, "tr": {"brokersShort": "Danışmanlar", "ownershipShort": "Yabancılara satış", "privacySettings": "Gizlilik ayarları", "consentTitle": "Gizliliğiniz bizim için önemli", "consentCopy": "Seçimlerinizi, dilinizi ve görünüm tercihlerinizi hatırlamak için çerezler ve depolama kullanıyoruz. Devam etmeden önce tercihlerinizi seçin.", "consentDetails": "Bu önizleme verilerinizi nasıl kullanır?", "consentPolicy": "Gizlilik seçiminiz bu cihazda saklanır. Tercihleri kabul ederseniz dil, görünüm ve filtreler hatırlanır. Yalnızca gerekli seçeneğinde gezinme tercihleri geçicidir ve sonraki ziyaret için kaydedilmez. Bu önizlemede analiz veya reklam araçları yoktur; AKTAL sistemine veri gönderilmez. Resmî site ve WhatsApp bağlantılarında ilgili hizmetlerin gizlilik politikaları geçerlidir.", "consentAccept": "Tercihleri kabul et", "consentNecessary": "Yalnızca gerekli"}};
+Object.entries(privacyCopy).forEach(([code,copy])=>Object.assign(dictionary[code],copy));
 let lang = 'ar';
 let projects = [];
 let currentPage = 'projects';
 let activeProject = null;
 let toastTimer;
 let searchTimer;
+let themePreference=readStorage('aktal-preview-theme','system');
 const themeQuery = matchMedia('(prefers-color-scheme: dark)');
 const motionQuery = matchMedia('(prefers-reduced-motion: reduce)');
 const pin = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>';
@@ -30,10 +33,11 @@ const cityName = p => lang === 'ar' ? p.city : p.cityEn;
 const districtName = p => lang === 'ar' ? p.district : p.districtEn;
 const escapeHtml = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 function readStorage(key, fallback) { try { return localStorage.getItem(key) || fallback; } catch { return fallback; } }
-function writeStorage(key, value) { try { localStorage.setItem(key, value); } catch {} }
+function writeStorage(key, value) { if(key!=='aktal-preview-consent' && readStorage('aktal-preview-consent','')!=='preferences') return; try { localStorage.setItem(key, value); } catch {} }
 function normalize(text) { return String(text).toLowerCase().replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/[\u064B-\u065F\u0640]/g,'').trim(); }
 
 function setTheme(value, save = true) {
+  themePreference=value;
   if (save) writeStorage('aktal-preview-theme', value);
   const theme = value === 'system' ? (themeQuery.matches ? 'dark' : 'light') : value;
   document.documentElement.dataset.theme = theme;
@@ -43,7 +47,7 @@ function setTheme(value, save = true) {
   $('#themeButton').setAttribute('aria-label', theme === 'dark' ? t('themeDark') : t('themeLight'));
   $('#themeButton').title = value === 'system' ? t('themeSystem') : (theme === 'dark' ? t('themeDark') : t('themeLight'));
 }
-themeQuery.addEventListener('change', () => { if (readStorage('aktal-preview-theme','system') === 'system') setTheme('system', false); });
+themeQuery.addEventListener('change', () => { if (themePreference === 'system') setTheme('system', false); });
 $('#themeButton').addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
 $('#themeButton').addEventListener('dblclick', () => { setTheme('system'); showToast(t('themeSystem')); });
 
@@ -71,7 +75,8 @@ function translate() {
   }[lang];
   $$('[data-contact-channel]').forEach(link => {link.setAttribute('aria-label',contactLabels[link.dataset.contactChannel]);link.title=contactLabels[link.dataset.contactChannel];});
   $$('.contact-channels,.floating-contact').forEach(group=>group.setAttribute('aria-label',contactLabels.group));
-  setTheme(readStorage('aktal-preview-theme','system'), false);
+  $('.mobile-nav').setAttribute('aria-label',$('.main-nav').getAttribute('aria-label'));
+  setTheme(themePreference, false);
   updateDistricts();
   updateHero();
   renderProjects();
@@ -144,11 +149,13 @@ function renderProjects() {
   $('#clearFilters').hidden = !($('#search').value || $('#cityFilter').value || $('#districtFilter').value || $('#statusFilter').value || $('#sortFilter').value !== 'default');
 }
 function persistFilters() {
+  if(readStorage('aktal-preview-consent','')!=='preferences') return;
   const state = {search:$('#search').value,city:$('#cityFilter').value,district:$('#districtFilter').value,status:$('#statusFilter').value,sort:$('#sortFilter').value};
   try { sessionStorage.setItem('aktal-preview-filters',JSON.stringify(state)); } catch {}
 }
 function restoreFilters() {
   try {
+    if(readStorage('aktal-preview-consent','')!=='preferences')return;
     const v = JSON.parse(sessionStorage.getItem('aktal-preview-filters') || '{}');
     $('#search').value = v.search || ''; $('#cityFilter').value = v.city || ''; updateDistricts(); $('#districtFilter').value = v.district || ''; $('#statusFilter').value = v.status || ''; $('#sortFilter').value = v.sort || 'default';
   } catch {}
@@ -193,7 +200,7 @@ function route(initial=false) {
   const page=['home','projects','brokers'].includes(path)?path:'projects';
   const changed=page!==currentPage;
   currentPage=page;
-  $$('.main-nav a').forEach(a=>{if(a.dataset.page===page)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  $$('.main-nav a,.mobile-nav a').forEach(a=>{if(a.dataset.page===page)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   $('#homeIntro').hidden=page!=='home';
   $('#projectSection').hidden=page==='brokers';
   $('#brokersSection').hidden=page!=='brokers';
@@ -251,12 +258,31 @@ document.addEventListener('click', event => {
 const inlineContacts = $('.contact-channels');
 const floatingContacts = $('#floatingContact');
 if ('IntersectionObserver' in window) {
+  let inlineVisible=false, footerVisible=false;
   const contactVisibility = new IntersectionObserver(entries => {
-    const visible = entries[0].isIntersecting && entries[0].intersectionRatio >= 0.5;
-    floatingContacts.hidden = visible;
-    inlineContacts.classList.toggle('is-visible', visible);
-  }, {threshold:0.5});
+    for(const entry of entries){
+      if(entry.target===inlineContacts){inlineVisible=entry.isIntersecting&&entry.intersectionRatio>=0.5;inlineContacts.classList.toggle('is-visible',inlineVisible);}
+      else footerVisible=entry.isIntersecting;
+    }
+    floatingContacts.hidden=inlineVisible||footerVisible;
+  },{threshold:[0,0.5]});
   contactVisibility.observe(inlineContacts);
+  contactVisibility.observe($('.site-footer'));
 }
 
-init();
+const privacyDialog = $('#privacyDialog');
+function showPrivacy() { closeLanguages(); privacyDialog.showModal(); document.body.classList.add('modal-open'); }
+function saveConsent(choice) {
+  if(choice==='essential') {
+    try {localStorage.removeItem('aktal-preview-theme');localStorage.removeItem('aktal-preview-language');sessionStorage.removeItem('aktal-preview-filters');}catch{}
+  }
+  writeStorage('aktal-preview-consent',choice);
+  if(choice==='preferences'){writeStorage('aktal-preview-language',lang);writeStorage('aktal-preview-theme',document.documentElement.dataset.theme);persistFilters();}
+  privacyDialog.close();
+}
+$('#acceptPreferences').addEventListener('click',()=>saveConsent('preferences'));
+$('#necessaryOnly').addEventListener('click',()=>saveConsent('essential'));
+$('#privacySettings').addEventListener('click',showPrivacy);
+privacyDialog.addEventListener('cancel',e=>{if(!readStorage('aktal-preview-consent',''))e.preventDefault();});
+privacyDialog.addEventListener('close',()=>{if(!menu.open&&!detail.open)document.body.classList.remove('modal-open');});
+init().then(()=>{if(!['preferences','essential'].includes(readStorage('aktal-preview-consent','')))showPrivacy();});
